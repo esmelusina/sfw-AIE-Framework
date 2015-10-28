@@ -23,12 +23,12 @@ namespace sfw
 	static glm::mat4 View;
 
 	// glhandle, rows, cols, width, height, element width/height, format
-	struct Texture { unsigned handle, r, c, w, h, ew, eh, f; };
+	struct Texture { unsigned handle; int r, c, w, h, ew, eh, f; };
 
 	static std::vector<Texture> textures;
 
 
-	unsigned loadTextureMap(const char * path, unsigned rows, unsigned cols)
+	unsigned loadTextureMap(const char * path, int rows, int cols)
 	{
 		int w, h, f;
 		auto p = stbi_load(path,&w,&h,&f,STBI_default);

@@ -143,6 +143,10 @@
   <ItemGroup>
     <ClInclude Include="sfwdraw.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\lib\Debug\glfw3.lib" />
+    <Library Include="..\lib\Release\glfw3.lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

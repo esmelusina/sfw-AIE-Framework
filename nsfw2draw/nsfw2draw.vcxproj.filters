@@ -24,4 +24,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\lib\Debug\glfw3.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\lib\Release\glfw3.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+  </ItemGroup>
 </Project>
