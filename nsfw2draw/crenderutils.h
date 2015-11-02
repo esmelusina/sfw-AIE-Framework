@@ -18,10 +18,10 @@ struct Vertex
 
 const Vertex QuadVerts[] =
 {
-	{ glm::vec4(-1, 1, 0, 1), glm::vec4(0, 0, -1, 0), glm::vec2(0,0) },
-	{ glm::vec4(1, 1, 0, 1),  glm::vec4(0, 0, -1, 0), glm::vec2(1,0) },
-	{ glm::vec4(1,-1, 0, 1),  glm::vec4(0, 0, -1, 0), glm::vec2(1,1) },
-	{ glm::vec4(-1,-1, 0, 1), glm::vec4(0, 0, -1, 0), glm::vec2(0,1) },
+	{ glm::vec4(-0.5f, 0.5f, 0, 1), glm::vec4(0, 0, -1, 0), glm::vec2(0,0) },
+	{ glm::vec4(0.5f, 0.5f, 0, 1),  glm::vec4(0, 0, -1, 0), glm::vec2(1,0) },
+	{ glm::vec4(0.5f,-0.5f, 0, 1),  glm::vec4(0, 0, -1, 0), glm::vec2(1,1) },
+	{ glm::vec4(-0.5f,-0.5f, 0, 1), glm::vec4(0, 0, -1, 0), glm::vec2(0,1) },
 };
 
 const unsigned QuadTris[] = { 3,1,0, 3,2,1 };
