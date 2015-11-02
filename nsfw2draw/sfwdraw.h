@@ -32,8 +32,8 @@ NOTE: YOU MUST CALL initContext for any of the functions to work!
 #define KEY_DOWN	263
 #define KEY_LEFT	264
 #define KEY_RIGHT	265
-#define MOUSE_BUTTON_RIGHT	0
-#define MOUSE_BUTTON_LEFT	1
+#define MOUSE_BUTTON_RIGHT	1
+#define MOUSE_BUTTON_LEFT	0
 
 // every 2 hexits corresponds to an 8-bit color component value.
 // look at the following values to intuit what that means.
