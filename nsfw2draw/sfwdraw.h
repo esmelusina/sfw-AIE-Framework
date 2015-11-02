@@ -20,7 +20,8 @@ Where applicable, 'centered' parameters indicate whether the image and transform
 Contact me for more details/examples/explanations.
 Author: Esmeralda Salamone, esmes@aie.edu.au
 
-Uses GLFW, GLM, STB, and opengl loader generator.
+Uses GLFW (release for all configs), GLM, STB, and opengl loader generator.
+For to whomever cares, this only link
 
 NOTE: YOU MUST CALL initContext for any of the functions to work!
 

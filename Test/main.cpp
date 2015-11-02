@@ -22,7 +22,7 @@ void main()
 		sfw::drawTexture(r, 0, 600, 800, 600, 0, false,0, 0x88888888);
 
 		acc += sfw::getDeltaTime();
-		sfw::drawString(d, "TIME 4 FUN", 400, 300, 48, 48, -acc*24,,MAGENTA);
+		sfw::drawString(d, "TIME 4 FUN", 400, 300, 48, 48, -acc*24,'\0',MAGENTA);
 
 		sfw::drawString(d, "6", 400, 32, 24, 24);
 		sfw::drawString(d, "12", 400, 600 - 32, 24, 24);
