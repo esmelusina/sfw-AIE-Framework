@@ -43,7 +43,7 @@ NOTE: YOU MUST CALL initContext for any of the functions to work!
 #define CYAN	 0x00ffffff
 #define MAGENTA  0xff00ffff
 #define YELLOW	 0xffff00ff
-#define RED		 0xff0000ff
+#define RED	 0xff0000ff
 #define GREEN    0x00ff00ff
 #define BLUE	 0x0000ffff
 #define NONE     0x00000000
