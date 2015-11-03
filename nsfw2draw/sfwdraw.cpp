@@ -22,9 +22,15 @@
 
 namespace sfw
 {
-	static bool isDead;
+	// opengl handle, atlas rows, atlas cols, width, height, color channels
+	// for internal use- no function returns this- but accessors use it.
+	struct Texture { const unsigned handle; const unsigned int r, c, w, h, f; }; 
+
+	static std::unordered_map<unsigned, Texture> textures; // map our texture data to the handles we provide via loadTextureMap
+
+	static bool isDead;			// make sure init isn't called again after termContext
 	static GLFWwindow *window;
-	static RenderObject quad;
+	static RenderObject quad;	// used for all rendering
 
 	static ShaderProgram textureShader;
 	static ShaderProgram lineShader;
@@ -33,32 +39,21 @@ namespace sfw
 	static float deltaTime;
 
 	static glm::mat4 cameraProjection;
-	static glm::mat4 cameraView;
+	static glm::mat4 cameraView;		//not really used, but available.
 
+	// helper conversion function to take HTML excodes to GL color codes.
+	// System programmers typically do ABGR instead of RGBA- but whatever-> going web for this one.
 	glm::vec4 hexToVec4(unsigned tint)
 	{
-		//struct RGB colorConverter(int hexValue)
-		//{
-		//	struct RGB rgbColor;
-		//	rgbColor.r = ((hexValue >> 16) & 0xFF) / 255.0;  // Extract the RR byte
-		//	rgbColor.g = ((hexValue >> 8) & 0xFF) / 255.0;   // Extract the GG byte
-		//	rgbColor.b = ((hexValue)& 0xFF) / 255.0;        // Extract the BB byte
-
-		//	return rgbColor;
-		//}
 		return glm::vec4(
 			(tint >> 24) & 0xff,
 			(tint >> 16) & 0xff,
 			(tint >>  8) & 0xff,
 			(tint >>  0) & 0xff)/255.f;
-
-		//return glm::vec4(glm::make_vec4((unsigned char*)&tint)*1.f) / 255;
 	}
 
 
-	struct Texture { const unsigned handle; const unsigned int r, c, w, h, f; }; //opengl handle, atlas rows, atlas cols, width, height, color channels
 
-	static std::unordered_map<unsigned,Texture> textures; // map our texture data to the handles we provide via loadTextureMap
 
 	void setProjectionMatrix(const float transform[16]) { cameraProjection = glm::make_mat4(transform); }
 	void setViewMatrix(const float transform[16])		{ cameraView = glm::make_mat4(transform); }
@@ -70,8 +65,8 @@ namespace sfw
 	{
 		int w, h, f;
 		unsigned d = 0;
-		auto p = stbi_load(path, &w, &h, &f, STBI_default);
-		switch (f)
+		auto p = stbi_load(path, &w, &h, &f, STBI_default); //fetch pixels using stbi 
+		switch (f) //f is the # of channels, but we need openGL color formats...
 		{
 		case 1: d = GL_RED;	break; case 2: d = GL_RG; break; case 3: d = GL_RGB; break; case 4: d = GL_RGBA; break;
 		default:std::cerr << path << ": File not found or incorrect format." << std::endl; return 0;
@@ -181,7 +176,9 @@ namespace sfw
 		SetWindowLong(ldr, GWL_STYLE, dwStyle);
 
 
+
 		quad = makeVAO(QuadVerts, 4, QuadTris, 6);
+
 
 		const char *vsourceTex = "#version 330\n\
 									layout(location = 0) in vec4 Position;\

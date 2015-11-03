@@ -3,6 +3,8 @@
 #include <cstring>
 
 
+
+
 TextureData makeTextureSPRITE(unsigned w, unsigned h, unsigned depth, const unsigned char *pixels )
 {
 	unsigned texture;
@@ -52,7 +54,7 @@ ShaderProgram makeShader(const char *vsource, const char *fsource)
 	GLuint vShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	glShaderSource(vShader, 1,  &vsource, 0);
+	glShaderSource(vShader, 1, &vsource, 0);
 	glShaderSource(fShader, 1, &fsource, 0);
 
 	glCompileShader(vShader);
