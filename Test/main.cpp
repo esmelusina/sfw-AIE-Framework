@@ -9,7 +9,7 @@ void main()
 	sfw::initContext(800,600,"NSFW Draw");
 
 	// load Texture Map
-	unsigned f = sfw::loadTextureMap("../res/tonc_font.png", 16, 6);	// test non-square atlas
+	unsigned f = sfw::loadTextureMap("../res/tonc_font.png", 6, 16);	// test non-square atlas
 	unsigned d = sfw::loadTextureMap("../res/fontmap.png",16,16);
 	unsigned r = sfw::loadTextureMap("../res/background.jpg");
 	unsigned u = sfw::loadTextureMap("../res/crosshair.png");
