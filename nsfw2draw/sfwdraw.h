@@ -41,9 +41,37 @@ NOTE: YOU MUST CALL initContext for any of the functions to work!
 #define MOUSE_BUTTON_RIGHT	1
 #define MOUSE_BUTTON_LEFT	0
 
+#define GAMEPAD_DEADZONE_THRESHOLD 0.25f
+
+#define XBOX360_AXIS_LSTICK_HORIZONTAL	0
+#define XBOX360_AXIS_LSTICK_VERTICAL	1
+#define XBOX360_AXIS_TRIGGERS			2
+#define XBOX360_AXIS_RSTICK_HORIZONTAL	3
+#define XBOX360_AXIS_RSTICK_VERTICAL	4
+
+#define XBOX360_BUTTON_A			0
+#define XBOX360_BUTTON_B			1
+#define XBOX360_BUTTON_X			2
+#define XBOX360_BUTTON_Y			3
+#define XBOX360_BUTTON_L			4
+#define XBOX360_BUTTON_R			5
+
+#define XBOX360_BUTTON_BACK			6
+#define XBOX360_BUTTON_START		7
+
+#define XBOX360_BUTTON_LSTICK		8
+#define XBOX360_BUTTON_RSTICK		9
+
+#define XBOX360_DPAD_UP				10
+#define XBOX360_DPAD_RIGHT			11
+#define XBOX360_DPAD_DOWN			12
+#define XBOX360_DPAD_LEFT			13
+
+
 // every 2 hexits corresponds to an 8-bit color component value.
 // look at the following values to intuit what that means.
 // In RGBA color format
+// 0xRRGGBBAA -> FF is opaque, 00 totally invisible
 #define WHITE	 0xffffffff
 #define BLACK    0x000000ff
 #define CYAN	 0x00ffffff
@@ -60,6 +88,7 @@ namespace sfw
 {
 	//Identity transformation matrix, primarily for internal use.
 	const float identity[16] = {1,0,0,0,  0,1,0,0, 0,0,1,0, 0,0,0,1};
+
 	// path	     : Path to the texture file
 	// rows,cols : If this is a uniform spritesheet (also called sprite atlas), how many rows and columns of sub-images are there?
 	// Returns a handle to be used with drawTexture/drawString/drawTextureMatrix functions. These handles are NOT openGL handles, and
@@ -159,4 +188,30 @@ namespace sfw
 	// This value will NOT change until stepContext is called.
 	// use getTime to implement your own timing system.
 	float getDeltaTime();
+
+
+	// Each connected joystick/gamepad has an ID automatically provided.
+	// Not sure what the OS behavior is for managing these- usually the order they are plugged in.
+	// We can ask how many axes a gamepad has, but we don't know which is which!
+	// It's up to you to experiment. Ideally you would create an association between inputs
+	// and whatever the gamepadName is.
+
+	// Check to see if a given gamepad index is valid.
+	bool		getGamepadPresent(unsigned gamepadIndex);
+
+	// Use to fetch the name of the gamepad, it's provided by the peripheral itself!
+	const char *getGamepadName(unsigned gamepadIndex);
+	
+	// The number of axis the gamepad has- We don't know which inputs are axis or buttons.
+	// Anything pressure sensitive is an axis!
+	unsigned	getNumGamepadAxis(unsigned gamepadIndex);
+	
+	// All other inputs. But we don't know what is what.
+	unsigned	getNumGamepadButtons(unsigned gamepadIndex);
+
+	// Supposing we know which axis is which, we can fetch a -1 to 1 value as to its state.
+	float		getGamepadAxis(unsigned gamepadIndex, unsigned axisIndex, float deadzone = GAMEPAD_DEADZONE_THRESHOLD);
+
+	// buttons are at least simpler.
+	bool		getGamepadButton(unsigned gamepadIndex, unsigned buttonIndex);
 }

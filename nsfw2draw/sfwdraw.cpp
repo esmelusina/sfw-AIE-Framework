@@ -24,7 +24,7 @@ namespace sfw
 {
 	// opengl handle, atlas rows, atlas cols, width, height, color channels
 	// for internal use- no function returns this- but accessors use it.
-	struct Texture { const unsigned handle; const unsigned int r, c, w, h, f; }; 
+	struct Texture { const unsigned handle; const unsigned int r, c, w, h, f; };
 
 	static std::unordered_map<unsigned, Texture> textures; // map our texture data to the handles we provide via loadTextureMap
 
@@ -48,15 +48,15 @@ namespace sfw
 		return glm::vec4(
 			(tint >> 24) & 0xff,
 			(tint >> 16) & 0xff,
-			(tint >>  8) & 0xff,
-			(tint >>  0) & 0xff)/255.f;
+			(tint >> 8) & 0xff,
+			(tint >> 0) & 0xff) / 255.f;
 	}
 
 
 
 
 	void setProjectionMatrix(const float transform[16]) { cameraProjection = glm::make_mat4(transform); }
-	void setViewMatrix(const float transform[16])		{ cameraView = glm::make_mat4(transform); }
+	void setViewMatrix(const float transform[16]) { cameraView = glm::make_mat4(transform); }
 
 	unsigned getTextureWidth(unsigned handle) { if (!textures.count(handle)) { std::cerr << "Invalid texture handle." << std::endl; return 0; }; return textures.at(handle).w; }
 	unsigned getTextureHeight(unsigned handle) { if (!textures.count(handle)) { std::cerr << "Invalid texture handle." << std::endl; return 0; };  return textures.at(handle).h; }
@@ -77,7 +77,7 @@ namespace sfw
 		stbi_image_free(p);
 
 		Texture t = { td.handle, rows, cols, (unsigned)w, (unsigned)h, (unsigned)f };
-		textures.insert(std::pair<unsigned,Texture>(textures.size()+1, t));
+		textures.insert(std::pair<unsigned, Texture>(textures.size() + 1, t));
 		return textures.size();
 	}
 
@@ -114,7 +114,7 @@ namespace sfw
 		glUniformMatrix4fv(glGetUniformLocation(lineShader.handle, "View"), 1, GL_FALSE, glm::value_ptr(cameraView));
 		glUniformMatrix4fv(glGetUniformLocation(lineShader.handle, "Projection"), 1, GL_FALSE, glm::value_ptr(cameraProjection));
 		glUniformMatrix4fv(glGetUniformLocation(lineShader.handle, "Model"), 1, GL_FALSE, transform);
-		
+
 		auto t = hexToVec4(tint);
 		glUniform4fv(glGetUniformLocation(lineShader.handle, "Tint"), 1, glm::value_ptr(t));
 
@@ -125,7 +125,7 @@ namespace sfw
 
 	void drawLine(float x1, float y1, float x2, float y2, unsigned tint, const float transform[16])
 	{
-		drawLineMatrix(tint, glm::value_ptr(glm::make_mat4(transform)*glm::translate(x1,y1,0.f) * glm::scale(x2-x1, y2-y1, 1.f) * glm::translate(0.5f, 0.5f, 0.f)));
+		drawLineMatrix(tint, glm::value_ptr(glm::make_mat4(transform)*glm::translate(x1, y1, 0.f) * glm::scale(x2 - x1, y2 - y1, 1.f) * glm::translate(0.5f, 0.5f, 0.f)));
 	}
 
 	void drawCircle(float x, float y, float radius, unsigned steps, unsigned tint, const float transform[16])
@@ -133,26 +133,26 @@ namespace sfw
 		const float step = (float)PI / (float)steps;
 
 		for (float i = step; i < 2 * PI; i += step)
-			drawLine(x + cos(i)*radius, y+sin(i)*radius, x+cos(i-step)* radius, y+sin(i-step) * radius,tint,transform);
+			drawLine(x + cos(i)*radius, y + sin(i)*radius, x + cos(i - step)* radius, y + sin(i - step) * radius, tint, transform);
 	}
 
 	void drawTexture(unsigned handle, float x, float y, float w, float h, float r, bool centered, unsigned index, unsigned int tint, const float transform[16])
 	{
-		drawTextureMatrix(handle, index,tint, glm::value_ptr(glm::make_mat4(transform) * glm::translate(x,y,0.f) *glm::rotate(r, 0.f, 0.f, 1.f)* glm::scale(w,h,0.f) * (centered? glm::mat4(1) : glm::translate(0.5f, -0.5f, 0.f))));
+		drawTextureMatrix(handle, index, tint, glm::value_ptr(glm::make_mat4(transform) * glm::translate(x, y, 0.f) *glm::rotate(r, 0.f, 0.f, 1.f)* glm::scale(w, h, 0.f) * (centered ? glm::mat4(1) : glm::translate(0.5f, -0.5f, 0.f))));
 	}
 
 	void drawString(unsigned handle, const char *text, float a_x, float a_y, float w, float h, float r, char o, unsigned int tint, const float transform[16])
 	{
 		float x = 0, y = 0;
 		glm::mat4 local = glm::make_mat4(transform);
-		glm::mat4 model = glm::translate(a_x, a_y, 0.f) * glm::rotate(r, 0.f, 0.f, 1.f) * glm::scale(w, h, 0.f) * glm::translate(0.5f,-0.5f,0.f);
+		glm::mat4 model = glm::translate(a_x, a_y, 0.f) * glm::rotate(r, 0.f, 0.f, 1.f) * glm::scale(w, h, 0.f) * glm::translate(0.5f, -0.5f, 0.f);
 		for (size_t i = 0; i < strlen(text); ++i)
 		{
 			if (text[i] == '\n' || text[i] == '\r') { y -= 1; x = 0; }
 			else if (text[i] == '\t') x += 4;
 			else
 			{
-				drawTextureMatrix(handle, text[i]-o,tint, glm::value_ptr(local * model * glm::translate(x, y, 0.f)));
+				drawTextureMatrix(handle, text[i] - o, tint, glm::value_ptr(local * model * glm::translate(x, y, 0.f)));
 				x += 1;
 			}
 		}
@@ -162,7 +162,7 @@ namespace sfw
 	{
 		if (isDead) { std::cerr << "SFW may only properly initialize a window once.\nWhine to esme @ esmes@aie.edu.au and she might implement a resizeContext and/or setFullscreen function." << std::endl; }
 		if (!glfwInit()) return false;
-		window = glfwCreateWindow( width, height, title, nullptr, nullptr );
+		window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 		if (!window) { glfwTerminate(); return false; }
 		glfwMakeContextCurrent(window);
 		if (!ogl_LoadFunctions()) { termContext(); return false; }
@@ -206,7 +206,7 @@ namespace sfw
 							      uniform sampler2D Texture; \
 								  void main() { outColor = texture(Texture,vTexCoord) * Tint;  }";
 
-		const char *vsourceLine =   "#version 330\n\
+		const char *vsourceLine = "#version 330\n\
 									layout(location = 0) in vec4 Position;\
 									uniform mat4 Projection;\
 									uniform mat4 View;\
@@ -243,8 +243,8 @@ namespace sfw
 		glDeleteProgram(lineShader.handle);
 
 		for each(auto t in textures)
-			glDeleteTextures(1, &t.second.handle);		
-		
+			glDeleteTextures(1, &t.second.handle);
+
 
 		glfwDestroyWindow(window);
 		glfwTerminate();
@@ -300,8 +300,62 @@ namespace sfw
 		return (float)h - (float)y;
 	}
 
-	float sfw::getTime()	{ return (float)glfwGetTime(); }
+	float sfw::getTime() { return (float)glfwGetTime(); }
 
 	float sfw::getDeltaTime() { return deltaTime; }
 
+
+
+	const char *sfw::getGamepadName(unsigned gamepadIndex) { return glfwGetJoystickName(gamepadIndex); }
+	unsigned	sfw::getNumGamepadAxis(unsigned gamepadIndex)
+	{
+		int count; glfwGetJoystickAxes(gamepadIndex, &count); return count;
+	}
+
+	unsigned sfw::getNumGamepadButtons(unsigned gamepadIndex)
+	{
+		int count; glfwGetJoystickButtons(gamepadIndex, &count); return count;
+	}
+
+	bool sfw::getGamepadPresent(unsigned gamepadIndex)
+	{
+		return nullptr != getGamepadName(gamepadIndex);
+	}
+	float sfw::getGamepadAxis(unsigned gamepadIndex, unsigned axisIndex, float deadzone)
+	{
+		int count;
+		float val = glfwGetJoystickAxes(gamepadIndex, &count)[axisIndex];
+
+		if (fabs(val) < deadzone) return 0;
+		return val;
+	}
+	bool sfw::getGamepadButton(unsigned gamepadIndex, unsigned buttonIndex)
+	{
+		int count;
+		return glfwGetJoystickButtons(gamepadIndex, &count)[buttonIndex];
+	}
+
+
+
+
+
+
+
+
+	unsigned loadSound(const char *path)
+	{
+
+	}
+	void playSound(unsigned handle, bool looping, float volume, float startTime, float speed)
+	{
+
+	}
+	void stopSound(unsigned handle)
+	{
+
+	}
+	float getSoundDuration(unsigned handle)
+	{
+
+	}
 }
