@@ -153,7 +153,7 @@ namespace sfw
 		glm::mat4 model = glm::translate(a_x, a_y, 0.f) * glm::rotate(r, 0.f, 0.f, 1.f) * glm::scale(w, h, 0.f) * glm::translate(0.5f,-0.5f,0.f);
 		for (size_t i = 0; i < strlen(text); ++i)
 		{
-			if (text[i] == '\n' || text[i] == '\r') { y += 1; x = 0; }
+			if (text[i] == '\n' || text[i] == '\r') { y -= 1; x = 0; }
 			else if (text[i] == '\t') x += 4;
 			else
 			{
@@ -183,7 +183,7 @@ namespace sfw
 
 		quad = makeVAO(QuadVerts, 4, QuadTris, 6);
 
-		const char *vsourceTex =   "#version 330\n\
+		const char *vsourceTex = "#version 330\n\
 									layout(location = 0) in vec4 Position;\
 									layout(location = 2) in vec2 TexCoord;\
 									out vec2 vTexCoord;\
@@ -195,8 +195,9 @@ namespace sfw
 									uniform int index = 0;\
 									void main()\
 									{\
-										float c = (index % cols) % cols; \
-										float r = (index / cols) % rows; \
+										int i = index % (rows*cols);\
+										float c = (i % rows); \
+										float r = (i / rows); \
 										vTexCoord = (vec2(c,r) + TexCoord) / vec2(rows,cols);\
 										gl_Position = Projection * View * Model * Position;\
 									}";

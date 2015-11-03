@@ -28,10 +28,16 @@ NOTE: YOU MUST CALL initContext for any of the functions to work!
 ************************/
 
 // Uses GLFW keycodes, research for additional options.
-#define KEY_UP		262
-#define KEY_DOWN	263
-#define KEY_LEFT	264
-#define KEY_RIGHT	265
+#define KEY_ESCAPE    256
+#define KEY_ENTER	  257
+#define KEY_TAB		  258
+#define KEY_BACKSPACE 259
+
+#define KEY_RIGHT     262
+#define KEY_LEFT	  263
+#define KEY_DOWN	  264
+#define KEY_UP		  265
+
 #define MOUSE_BUTTON_RIGHT	1
 #define MOUSE_BUTTON_LEFT	0
 
@@ -43,7 +49,7 @@ NOTE: YOU MUST CALL initContext for any of the functions to work!
 #define CYAN	 0x00ffffff
 #define MAGENTA  0xff00ffff
 #define YELLOW	 0xffff00ff
-#define RED	 0xff0000ff
+#define RED		 0xff0000ff
 #define GREEN    0x00ff00ff
 #define BLUE	 0x0000ffff
 #define NONE     0x00000000
