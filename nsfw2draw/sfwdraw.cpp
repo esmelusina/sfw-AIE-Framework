@@ -309,11 +309,13 @@ namespace sfw
 	const char *sfw::getGamepadName(unsigned gamepadIndex) { return glfwGetJoystickName(gamepadIndex); }
 	unsigned	sfw::getNumGamepadAxis(unsigned gamepadIndex)
 	{
+		if (!getGamepadPresent(gamepadIndex)) return 0;
 		int count; glfwGetJoystickAxes(gamepadIndex, &count); return count;
 	}
 
 	unsigned sfw::getNumGamepadButtons(unsigned gamepadIndex)
 	{
+		if (!getGamepadPresent(gamepadIndex)) return 0;
 		int count; glfwGetJoystickButtons(gamepadIndex, &count); return count;
 	}
 
@@ -321,18 +323,40 @@ namespace sfw
 	{
 		return nullptr != getGamepadName(gamepadIndex);
 	}
-	float sfw::getGamepadAxis(unsigned gamepadIndex, unsigned axisIndex, float deadzone)
+	float sfw::getGamepadAxis(unsigned gi, unsigned axisIndex, float deadzone)
 	{
+		if (!getGamepadPresent(gi))
+		{
+			std::cerr << "Gamepad (idx #" << gi << ") not found. Aborting." << std::endl;
+			return 0;
+		}
 		int count;
-		float val = glfwGetJoystickAxes(gamepadIndex, &count)[axisIndex];
+		auto f = glfwGetJoystickAxes(gi, &count);
+		if (axisIndex >= count)
+		{
+			std::cerr << getGamepadName(gi) << "(idx #" << gi << ") has" << count << " axes. " << axisIndex << " out of range." << std::endl;
+			return 0;
+		}
 
+		auto val = f[axisIndex];
 		if (fabs(val) < deadzone) return 0;
 		return val;
 	}
-	bool sfw::getGamepadButton(unsigned gamepadIndex, unsigned buttonIndex)
+	bool sfw::getGamepadButton(unsigned gi, unsigned buttonIndex)
 	{
+		if (!getGamepadPresent(gi))
+		{
+			std::cerr << "Gamepad (idx #" << gi << ") not found. Aborting." << std::endl;
+			return false;
+		}
 		int count;
-		return glfwGetJoystickButtons(gamepadIndex, &count)[buttonIndex];
+		auto f = glfwGetJoystickButtons(gi, &count);
+		if (buttonIndex >= count)
+		{
+			std::cerr << getGamepadName(gi) << "(idx #" << gi << ") has" << count << " buttons. " << buttonIndex << " out of range." << std::endl;
+		}
+
+		return f[buttonIndex];
 	}
 
 
@@ -341,7 +365,7 @@ namespace sfw
 
 
 
-
+/*
 	unsigned loadSound(const char *path)
 	{
 
@@ -357,5 +381,5 @@ namespace sfw
 	float getSoundDuration(unsigned handle)
 	{
 
-	}
+	}*/
 }

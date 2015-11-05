@@ -7,6 +7,9 @@
 
 void main()
 {
+	
+
+
 	sfw::initContext(800,600,"NSFW Draw");
 
 	// load Texture Map
