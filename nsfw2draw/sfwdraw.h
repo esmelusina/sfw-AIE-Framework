@@ -214,4 +214,10 @@ namespace sfw
 
 	// buttons are at least simpler.
 	bool		getGamepadButton(unsigned gamepadIndex, unsigned buttonIndex);
+
+
+
+	//unsigned loadSound(const char *path);
+	//void playSound(unsigned handle, bool looping = false);
+	//void stopSound(unsigned handle);
 }

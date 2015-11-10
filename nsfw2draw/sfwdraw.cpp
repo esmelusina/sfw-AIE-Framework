@@ -1,4 +1,5 @@
-
+#include <Windows.h>
+#include <Mmsystem.h>
 
 #include <ogl\gl_core_4_4.h>
 
@@ -11,10 +12,12 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb\stb_image.h>
 #include <iostream>
+#include <fstream>
 #include <unordered_map>
 
 #include "sfwdraw.h"
 #include "crenderutils.h"
+
 
 
 #include <glm\glm.hpp>
@@ -25,8 +28,10 @@ namespace sfw
 	// opengl handle, atlas rows, atlas cols, width, height, color channels
 	// for internal use- no function returns this- but accessors use it.
 	struct Texture { const unsigned handle; const unsigned int r, c, w, h, f; };
+	struct Sound { std::string path; };
 
 	static std::unordered_map<unsigned, Texture> textures; // map our texture data to the handles we provide via loadTextureMap
+	static std::unordered_map<unsigned, Sound> sounds;
 
 	static bool isDead;			// make sure init isn't called again after termContext
 	static GLFWwindow *window;
@@ -364,22 +369,28 @@ namespace sfw
 
 
 
-
-/*
 	unsigned loadSound(const char *path)
 	{
-
+		if (std::ifstream(path).good())
+		{
+			sounds.insert(std::pair<unsigned, Sound>(sounds.size() + 1, { std::string(path) }));
+			return sounds.size();
+		}
+		
+		std::cerr << "Sound file not found at " << path << std::endl;
+		return 0;
 	}
-	void playSound(unsigned handle, bool looping, float volume, float startTime, float speed)
+	void playSound(unsigned handle, bool looping)
 	{
 
+		auto res = SND_FILENAME | SND_ASYNC;
+		if (looping) res |= SND_LOOP;
+		PlaySound(TEXT(sounds[handle].path.c_str()), NULL, res);
 	}
+
 	void stopSound(unsigned handle)
 	{
-
+		PlaySound(TEXT(sounds[handle].path.c_str()), NULL, 0);
 	}
-	float getSoundDuration(unsigned handle)
-	{
 
-	}*/
 }

@@ -12,6 +12,7 @@ void main()
 
 	sfw::initContext(800,600,"NSFW Draw");
 
+	
 	// load Texture Map
 	unsigned f = sfw::loadTextureMap("../res/tonc_font.png", 6, 16);	// test non-square atlas
 	unsigned d = sfw::loadTextureMap("../res/fontmap.png",16,16);
@@ -32,8 +33,11 @@ void main()
 	float x = 400, y = 300, speed = 200.0f;
 	float rot = 0;
 
+	
+
 	while (sfw::stepContext())
 	{	
+
 		sfw::drawTexture(u, x, y, sfw::getTextureWidth(u)/2.5, sfw::getTextureHeight(u)/2.5,rot,true,0,0x88ffffff);
 
 		x += sfw::getGamepadAxis(0, 0) * speed * sfw::getDeltaTime();
