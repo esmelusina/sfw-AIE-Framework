@@ -1,6 +1,6 @@
 #include <sfwdraw.h>
 #include "AssetLibrary.h"
-#include "GameObject.h"
+#include "Player.h"
 
 void main()
 {
@@ -10,7 +10,7 @@ void main()
 
 	loadTexture("Dinosaur", "../res/explosion.png", 5, 3);
 
-	GameObject dinosaur;
+	Player dinosaur;
 	dinosaur.textureName = "Dinosaur";
 
 	while (sfw::stepContext())

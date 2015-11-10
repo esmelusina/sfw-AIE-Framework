@@ -5,7 +5,9 @@
 /*
 	static variable is one whose memory address is constant and
 	determined at the time in which a program boots up
-*/
+
+	Associative Container:
+	*/
 static std::map<std::string, unsigned> textures;
 
 void loadTexture(const std::string &name, const char *path,
