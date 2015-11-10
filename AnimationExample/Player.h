@@ -1,21 +1,30 @@
 #pragma once
 #include "GameObject.h"
 
+/*
+	See GameObject.h for rationale!
+
+
+	Inheriting from gameobject, we can adopt all of the properties it has and
+	contribute some of our own. A player, for example, may want to update
+	it's position based on input.
+*/
+
+
 class Player : public GameObject
 {
 public:
+	float speed;
+
+	Player() : speed(100) {}
+
 	virtual void update()
 	{
-		if (sfw::getKey('W'))
-			y += sfw::getDeltaTime() * 15;
-		// Check for movement
-		// Update position, etc.
-	}
+		float sdt = sfw::getDeltaTime() * speed;
 
-	virtual void draw()
-	{
-		GameObject::draw();
-		sfw::drawTexture(getTexture(textureName), x+width, y,
-			width*2, height, angle);
+		if (sfw::getKey('W')) y += sdt; // Euler integration
+		if (sfw::getKey('S')) y -= sdt;
+		if (sfw::getKey('A')) x -= sdt;
+		if (sfw::getKey('D')) x += sdt;
 	}
 };
