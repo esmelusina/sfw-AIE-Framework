@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-
+#include <vector>
 /*
 	Example presented in class 11/9/2015.
 
@@ -25,3 +25,26 @@ void loadTexture(const std::string &name, const char *path,
 											unsigned r, unsigned c);
 
 unsigned getTexture(const std::string &name);
+
+// Associate the animation with a texture
+// Frames of an animation
+
+unsigned getFrame(const std::string &tname, // texture name
+				  const std::string &aname,
+				  unsigned frame);
+
+unsigned getAnimationLength(const std::string &tname, // texture name
+							const std::string &aname);
+
+
+float getAnimationDuration(const std::string &tname, // texture name
+						   const std::string &aname);
+
+void addAnimation(const std::string &tname, // texture name
+				  const std::string &aname, // animation
+				  const std::vector<unsigned> &frames,
+				  float frameRate = 12.f);
+
+unsigned sampleAnimation(const std::string &tname, // texture name
+						 const std::string &aname,
+						 float timePassed, float speed = 1.f, bool loop = true);

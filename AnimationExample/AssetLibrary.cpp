@@ -46,3 +46,39 @@ unsigned getTexture(const std::string &name)
 	}
 	return textures[name];
 }
+
+
+// <texture, animation, frames>
+static std::map<std::string,	// Name of the texture
+				std::map<std::string,	// name of the animation
+						std::vector<unsigned>>> animations;	// the actual frame data
+
+static std::map<std::string, std::map<std::string, float> > frameRates;
+
+unsigned getFrame(const std::string &tname, const std::string &aname, unsigned frame)
+			{ return animations[tname][aname][frame]; }
+
+unsigned getAnimationLength(const std::string &tname, const std::string &aname)
+			{ return animations[tname][aname].size(); }
+
+float getAnimationDuration(const std::string &tname, const std::string &aname)
+			{ return getAnimationLength(tname,aname) / frameRates[tname][aname]; }
+
+
+void addAnimation(const std::string &tname, const std::string &aname, const std::vector<unsigned> &frames, float frameRate)
+{
+	animations[tname][aname] = frames;
+	frameRates[tname][aname] = frameRate;
+}
+
+unsigned sampleAnimation(const std::string &tname, const std::string &aname, float timePassed, float speed, bool loop)
+{
+	unsigned index = (timePassed / getAnimationDuration(tname,aname)) 
+											* (getAnimationLength(tname,aname));
+	if (loop)
+		index %= getAnimationLength(tname, aname);
+	else if (index == getAnimationLength(tname, aname))
+		index--;
+
+	return getFrame(tname, aname, index);
+}

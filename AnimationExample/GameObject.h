@@ -28,17 +28,27 @@ See Player.h for an example of inheritance!
 class GameObject
 {
 public:
-	float x, y, width, height, angle;	// Just the vars necessary for drawing
-	std::string textureName;
+	float x, y, width, height, angle;			// Just the vars necessary for drawing
+	
+	std::string textureName, animationName;		// Information for animation
+	float animTimer;	
+	unsigned currentFrame;
 
 	GameObject() :x(400),y(300),
 				width(60),height(60),
-					angle(0), textureName("") {}
+					angle(0),
+					currentFrame(0), animTimer(0) {}
 	
-	virtual void draw() // See the main.cpp for an example of how concise the drawing code looks now.
+	// See the main.cpp for an example of how concise the drawing code looks now.
+	virtual void draw() 
 	{
 		sfw::drawTexture(getTexture(textureName),x,y,
-							width,height,angle);
+							width,height,angle,true,currentFrame);
 	}
-	virtual void update() { } 
+
+	virtual void update()
+	{
+		animTimer += sfw::getDeltaTime();
+		currentFrame = sampleAnimation(textureName, animationName, animTimer);
+	} 
 };
