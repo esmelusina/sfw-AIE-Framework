@@ -15,12 +15,24 @@ class Player : public GameObject
 {
 public:
 	float speed;
-	Player() : speed(100) { width = 200; height = 200; }
+	Player() : speed(100)
+	{
+		width = 200; height = 200;
+		animationName = "NOTVERYBOOM";
+		textureName	  = "Explosion";
+	}
+
+	virtual void onCollision(GameObject &go, float distance)
+	{
+		animTimer = 0;
+		animationName = "NOTVERYBOOM";
+	}
 
 	virtual void update()
 	{
 		GameObject::update();
 
+		// example of switching between animations
 		if (sfw::getKey(' '))
 		{
 			animTimer = 0;

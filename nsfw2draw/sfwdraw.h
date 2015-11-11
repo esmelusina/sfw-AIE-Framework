@@ -154,8 +154,10 @@ namespace sfw
 	// title			: OS name of the window
 	// initShaders		: Set to false if this is the second time calling initContext for the lifetime of the program.
 	bool initContext(unsigned width = 800, unsigned height = 600, const char *title = "SFW Draw");
+	
 	// closes the rendering context AND DELETES ALL TEXTURES!
 	void termContext();
+	
 	// Update the rendering context- use as driver for the game loop. Returns false if the window should close.
 	bool stepContext();
 

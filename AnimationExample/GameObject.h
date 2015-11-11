@@ -16,39 +16,41 @@ These would probably be limited to data necessary for rendering and collision de
 possibly animation.
 
 
-version 1: We're just going to make sure everything has, at the very least, a way to draw.
-
-*version 2: Will/May provide a basis for animation.
-
-*version 3: Will unite how we handle collision detection.
-
 See Player.h for an example of inheritance!
+
 */
 
 class GameObject
 {
 public:
-	float x, y, width, height, angle;			// Just the vars necessary for drawing
 	
-	std::string textureName, animationName;		// Information for animation
+	// Just the vars necessary for drawing
+	std::string textureName; // see AssetLibrary
+	float x, y, width, height, angle;		
+	
+	// Vars necessary for animation
+	std::string animationName;		// Information for animation
 	float animTimer;	
 	unsigned currentFrame;
 
-	GameObject() :x(400),y(300),
-				width(60),height(60),
-					angle(0),
+	GameObject() :x(400), y(300), width(60),height(60), angle(0),
 					currentFrame(0), animTimer(0) {}
 	
-	// See the main.cpp for an example of how concise the drawing code looks now.
+	// Draw function is the same
 	virtual void draw() 
 	{
-		sfw::drawTexture(getTexture(textureName),x,y,
-							width,height,angle,true,currentFrame);
+		sfw::drawTexture(getTexture(textureName), x, y, width, height, angle, true, currentFrame);
 	}
 
+	// We could use the base class for updating the animation.
+	// This REQUIRES that we use animations always when drawing, even if it's only one frame!
 	virtual void update()
 	{
-		animTimer += sfw::getDeltaTime();
+		animTimer	+= sfw::getDeltaTime();
 		currentFrame = sampleAnimation(textureName, animationName, animTimer);
-	} 
+	}
+
+	virtual void onCollision(GameObject &go, float distance) { }
 };
+
+float doCollision(GameObject &go1, GameObject &go2);

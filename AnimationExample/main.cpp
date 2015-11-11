@@ -2,7 +2,7 @@
 #include "AssetLibrary.h"
 #include "Player.h"
 #include <vector>
-
+#include "collisiontests.h"
 
 void main()
 {
@@ -19,15 +19,22 @@ void main()
 
 	// Since I know the name, I can reuse it anywhere!
 	Player dinosaur;
-	dinosaur.textureName	= "Explosion";
-	dinosaur.animationName	= "BOOM";
+	GameObject barricade;
+	barricade.x = 80;
+	barricade.y = 80;
+	barricade.textureName = "Explosion";
+	barricade.animationName = "NOTVERYBOOM";
 
 	while (sfw::stepContext())
 	{
+		barricade.draw();
 		dinosaur.draw();	// Draw uses gameObject's draw, which just checks what the asset name is
 							// and then fetches the appropriate handle for the draw.
-
+		barricade.update();
 		dinosaur.update(); 
+
+
+		doCollision(barricade, dinosaur);
 	}
 
 	sfw::termContext();
