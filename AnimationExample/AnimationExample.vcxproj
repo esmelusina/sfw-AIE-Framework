@@ -126,11 +126,14 @@
     <ClCompile Include="AssetLibrary.cpp" />
     <ClCompile Include="collisiontests.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetLibrary.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="collisiontests.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sprite.h" />
   </ItemGroup>

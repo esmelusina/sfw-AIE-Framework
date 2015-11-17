@@ -3,6 +3,7 @@
 #include <sfwdraw.h>
 #include "AssetLibrary.h"
 
+
 /*
 To build a game, we need to create a data model that changes over time and input.
 The model will typically be broken down into various agents, entities, or gameObjects.
@@ -20,21 +21,31 @@ See Player.h for an example of inheritance!
 
 */
 
+class GameState;
+
 class GameObject
 {
 public:
-	
+	// Game state reference so that everyone can interact
+	// with the game state
+	static GameState *&gs()
+	{
+		static GameState *game;
+		return game;
+	}
+
 	// Just the vars necessary for drawing
 	std::string textureName; // see AssetLibrary
 	float x, y, width, height, angle;		
-	
+	bool isActive;
+
 	// Vars necessary for animation
 	std::string animationName;		// Information for animation
 	float animTimer;	
 	unsigned currentFrame;
 
-	GameObject() :x(400), y(300), width(60),height(60), angle(0),
-					currentFrame(0), animTimer(0) {}
+	GameObject() : x(400), y(300), width(60),height(60), angle(0),
+					currentFrame(0), animTimer(0), isActive(true) {}
 	
 	// Draw function is the same
 	virtual void draw() 
@@ -44,8 +55,11 @@ public:
 
 	// We could use the base class for updating the animation.
 	// This REQUIRES that we use animations always when drawing, even if it's only one frame!
+
+
 	virtual void update()
 	{
+		//position += velocity * deltatime;
 		animTimer	+= sfw::getDeltaTime();
 		currentFrame = sampleAnimation(textureName, animationName, animTimer);
 	}
