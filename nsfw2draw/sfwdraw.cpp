@@ -60,11 +60,12 @@ namespace sfw
 
 
 
+
 	void setProjectionMatrix(const float transform[16]) { cameraProjection = glm::make_mat4(transform); }
 	void setViewMatrix(const float transform[16]) { cameraView = glm::make_mat4(transform); }
 
-	unsigned getTextureWidth(unsigned handle) { if (!textures.count(handle)) { std::cerr << "Invalid texture handle." << std::endl; return 0; }; return textures.at(handle).w; }
-	unsigned getTextureHeight(unsigned handle) { if (!textures.count(handle)) { std::cerr << "Invalid texture handle." << std::endl; return 0; };  return textures.at(handle).h; }
+	unsigned getTextureWidth(unsigned handle)   { if (!textures.count(handle)) { std::cerr << "Invalid texture handle." << std::endl; return 0; }; return textures.at(handle).w; }
+	unsigned getTextureHeight(unsigned handle)  { if (!textures.count(handle)) { std::cerr << "Invalid texture handle." << std::endl; return 0; };  return textures.at(handle).h; }
 
 	unsigned loadTextureMap(const char * path, unsigned rows, unsigned cols)
 	{
@@ -86,6 +87,25 @@ namespace sfw
 		return textures.size();
 	}
 
+    struct _mat4 {
+        float m[16]; operator float*() { return m; };
+        operator const float*() const { return m; }
+    };
+
+    inline _mat4 _2Dto3D(const float m[9], float Z = 0)
+    {
+        return
+        {   m[0],m[1], 0 , m[2],
+            m[3],m[4], 0 , m[5],
+              0 ,  0 , 1 ,   0 , 
+            m[6],m[7], Z , m[8] };
+    }
+
+    void drawTextureMatrix3(unsigned handle, unsigned index, unsigned int tint, const float transform[9], float z)
+    {
+        drawTextureMatrix(handle, index, tint, _2Dto3D(transform, z));
+    }
+    
 	void drawTextureMatrix(unsigned handle, unsigned index, unsigned int tint, const float transform[16])
 	{
 		if (!textures.count(handle)) { std::cerr << "Invalid texture handle, draw operation aborted." << std::endl; return; }
@@ -132,6 +152,12 @@ namespace sfw
 	{
 		drawLineMatrix(tint, glm::value_ptr(glm::make_mat4(transform)*glm::translate(x1, y1, 0.f) * glm::scale(x2 - x1, y2 - y1, 1.f) * glm::translate(0.5f, 0.5f, 0.f)));
 	}
+
+    void drawLine3(float x1, float y1, float x2, float y2, float z, unsigned tint, const float transform[9])
+    {
+        auto d = _2Dto3D(transform);
+        drawLineMatrix(tint, glm::value_ptr(glm::make_mat4(d.m)*glm::translate(x1, y1, z) * glm::scale(x2 - x1, y2 - y1, 1.f) * glm::translate(0.5f, 0.5f, 0.f)));
+    }
 
 	void drawCircle(float x, float y, float radius, unsigned steps, unsigned tint, const float transform[16])
 	{
@@ -229,10 +255,13 @@ namespace sfw
 		textureShader = makeShader(vsourceTex, fsourceTex);
 		lineShader = makeShader(vsourceLine, fsourceLine);
 
-		cameraProjection = glm::ortho(0.f, (float)width, 0.f, (float)height);
+		cameraProjection = glm::ortho<float>(0.f, (float)width, 0.f, (float)height, 100, -100);
 		cameraView = glm::mat4(1);
 
 		glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        //glDepthMask(GL_FALSE);
+
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(0.25f, 0.25f, 0.25f, 1);
 
@@ -268,7 +297,7 @@ namespace sfw
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		return !glfwWindowShouldClose(window);
 	}

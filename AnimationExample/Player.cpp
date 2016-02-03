@@ -9,6 +9,8 @@ void Player::update()
 	{
 		fireDelay = rateOfFire;
 		gs()->makeBullet(x, y, 0, 300, 4.f); // Now we can use this to draw stuff!
+
+		
 	}
 
 	if (animTimer > getAnimationDuration(textureName, animationName))

@@ -29,9 +29,26 @@ void main()
 		//	menu.draw();
 		//case GAME:
 			game.update(); // Do the thing!
-			game.draw();   // Draw it!
+			game.draw();   // Draw it!	    
 		//}
 	}
 
 	sfw::termContext();
 }
+
+/*
+	What is better?
+		What takes less time to develop?	(Productivity)
+		What is easier to understand?		(Teamworking)
+		What is easier to maintain?			(Patch, Analytics)
+		What is easier to extend?			(DLC, Features)
+		What is more performant?			(Space-Time)
+		What is easier to use?				(IO precise feedback)
+
+	It depends on the goals and implementation.	
+	It depends on the scope and use-case.		
+	It depends on the requirements.
+	It depends on the user.
+
+	(Platform, Software, Hardware, Goals, Scope)
+*/

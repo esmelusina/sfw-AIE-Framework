@@ -89,6 +89,8 @@ namespace sfw
 	//Identity transformation matrix, primarily for internal use.
 	const float identity[16] = {1,0,0,0,  0,1,0,0, 0,0,1,0, 0,0,0,1};
 
+    const float identity3[9] = { 1,0,0,  0,1,0, 0,0,1};
+
 	// path	     : Path to the texture file
 	// rows,cols : If this is a uniform spritesheet (also called sprite atlas), how many rows and columns of sub-images are there?
 	// Returns a handle to be used with drawTexture/drawString/drawTextureMatrix functions. These handles are NOT openGL handles, and
@@ -117,6 +119,17 @@ namespace sfw
 	// transform	  : a 4x4 transformation matrix
 	void drawTextureMatrix(unsigned handle, unsigned index = 0, unsigned int tint = WHITE, const float transform[16] = identity);
 	
+
+    // used internally for all texture draw calls.
+    // handle		  : Texture handle returned from loadTextureMap
+    // index		  : If loadTextureMap was given rows and cols, index will fetch the corresponding sub-image
+    // tint			  : a hex color value applied as a tint to the texture
+    // transform	  : a 3x3 transformation matrix
+    // Z              : a Z offset used to determine the draw order
+    void drawTextureMatrix3(unsigned handle, unsigned index=0, unsigned int tint=WHITE, const float transform[9]=identity3, float z=0);
+
+
+
 	// verbose wrapper for drawTextureMatrix, focusing on drawing strings of text.
 	// search "bitmap font" for some examples.
 	// Uses 'centered = false' behavior- transformations applied to top-left corner of all the text.
@@ -140,6 +153,13 @@ namespace sfw
 	// tint			  : hex color value
 	// transform	  : a 4x4 transformation matrix, applied as parent transform
 	void drawLine(float x1, float y1, float x2, float y2, unsigned tint = 0xffffffff, const float transform[16] = identity);
+
+    // verbose wrapper for drawLineMatrix
+    // x1,y1,x2,y2	  : first and second position of the line.
+    // tint			  : hex color value
+    // transform	  : a 3x3 transformation matrix, applied as parent transform
+    // Z              : a Z offset used to determine the draw order
+    void drawLine3(float x1, float y1, float x2, float y2, float z, unsigned tint, const float transform[9] = identity3);
 
 	// uses drawLine to generate a circle
 	// x,y		: translation (position)
@@ -219,7 +239,6 @@ namespace sfw
 
 
 
-	//unsigned loadSound(const char *path);
-	//void playSound(unsigned handle, bool looping = false);
-	//void stopSound(unsigned handle);
+
+
 }
